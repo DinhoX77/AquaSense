@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌊 HidroAlerta
+# 🌊 AquaSense
 
 ### Sistema Inteligente de Monitoramento de Alagamento
 
