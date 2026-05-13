@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alerta Água — Monitoramento de Alagamento</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <!-- ALERTA DE RISCO -->
+  <div id="alerta-banner" class="alerta-banner hidden" role="alert">
+    <span class="alerta-icon">⚠️</span>
+    <span id="alerta-texto">Atenção! Risco de alagamento detectado na região.</span>
+    <button id="fechar-alerta" aria-label="Fechar alerta">✕</button>
+  </div>
+
+  <!-- CABEÇALHO -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="logo">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="#1565C0"/>
+            <path d="M20 8C20 8 10 18 10 24a10 10 0 0020 0c0-6-10-16-10-16z" fill="white" opacity="0.95"/>
+            <path d="M13 27c2-2 12-2 14 0" stroke="#1565C0" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="header-title">Alerta Água</h1>
+          <p class="header-subtitle">Monitoramento inteligente de risco de alagamento</p>
+        </div>
+      </div>
+      <a href="#monitoramento" class="btn-primary">Ver monitoramento</a>
+    </div>
+  </header>
+
+  <!-- SEÇÃO PRINCIPAL -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">📡 Projeto Escolar — ESP32 + Sensores</div>
+      <h2 class="hero-title">Monitoramento de nível da água em tempo real</h2>
+      <p class="hero-desc">
+        Sistema com <strong>ESP32</strong> e sensores para identificar o nível da água em tempo real
+        e alertar moradores sobre risco de alagamento.
+      </p>
+      <div class="hero-features">
+        <div class="feature-item">
+          <span class="feature-icon">📡</span>
+          <span>Dados do ESP32</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🔔</span>
+          <span>Alertas automáticos</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">📊</span>
+          <span>Histórico de leituras</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAINEL DE MONITORAMENTO -->
+  <section id="monitoramento" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Painel de monitoramento</h2>
+        <span class="atualizando-tag">
+          <span class="pulse-dot"></span>
+          Atualizando a cada 5s
+        </span>
+      </div>
+
+      <div class="cards-grid">
+
+        <!-- Card: Altura da água -->
+        <div class="card card-altura">
+          <div class="card-label">Altura da água</div>
+          <div class="card-valor-wrap">
+            <span id="altura-valor" class="card-valor">--</span>
+            <span class="card-unidade">cm</span>
+          </div>
+          <div class="barra-container" title="Nível atual da água">
+            <div id="barra-nivel" class="barra-nivel"></div>
+          </div>
+          <div class="barra-labels">
+            <span>0 cm</span>
+            <span>50 cm</span>
+            <span>100 cm</span>
+            <span>150 cm</span>
+          </div>
+        </div>
+
+        <!-- Card: Status -->
+        <div class="card card-status">
+          <div class="card-label">Status atual</div>
+          <div id="status-badge" class="status-badge">--</div>
+          <div id="status-desc" class="status-desc"></div>
+          <div class="status-niveis">
+            <div class="nivel-item nivel-normal">Normal &lt; 30cm</div>
+            <div class="nivel-item nivel-atencao">Atenção 30–60cm</div>
+            <div class="nivel-item nivel-risco">Risco 60–90cm</div>
+            <div class="nivel-item nivel-alagado">Alagado &gt; 90cm</div>
+          </div>
+        </div>
+
+        <!-- Card: Última leitura -->
+        <div class="card card-hora">
+          <div class="card-label">Última leitura</div>
+          <div id="hora-valor" class="hora-valor">--:--:--</div>
+          <div class="hora-data" id="hora-data">--/--/----</div>
+          <div class="sensor-info">
+            <span class="sensor-dot" id="sensor-dot"></span>
+            <span id="sensor-status-txt">Aguardando...</span>
+          </div>
+        </div>
+
+        <!-- Card: Dispositivo -->
+        <div class="card card-sensor">
+          <div class="card-label">Dispositivo</div>
+          <div class="device-name">ESP32 — Sensor #01</div>
+          <div class="device-detail">📍 Rua das Flores, 210</div>
+          <div class="device-detail">📶 Protocolo: HTTP/Wi-Fi</div>
+          <div class="device-detail" id="contagem-leituras">📋 Leituras: 0</div>
+          <div class="device-detail">🔋 Bateria: OK</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTÓRICO -->
+  <section class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">Histórico de medições</h2>
+      <div class="tabela-wrap">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Horário</th>
+              <th>Altura (cm)</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="historico-body">
+            <tr>
+              <td colspan="3" class="tabela-vazia">Aguardando primeira leitura...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- RODAPÉ -->
+  <footer class="footer">
+    <div class="container">
+      <p>Alerta Água &copy; 2025 — Projeto escolar de monitoramento com ESP32</p>
+      <p class="footer-sub">Backend Java (Spring Boot) + Simulação de sensor ESP32</p>
+    </div>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>

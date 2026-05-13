@@ -1,0 +1,602 @@
+/* ============================================================
+   ALERTA ÁGUA — style.css
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --azul:       #1565C0;
+  --azul-light: #1e88e5;
+  --azul-bg:    #e3f2fd;
+
+  --normal:     #2e7d32;
+  --normal-bg:  #e8f5e9;
+  --normal-bd:  #a5d6a7;
+
+  --atencao:    #f57f17;
+  --atencao-bg: #fff9c4;
+  --atencao-bd: #fff176;
+
+  --risco:      #e65100;
+  --risco-bg:   #fff3e0;
+  --risco-bd:   #ffcc80;
+
+  --alagado:    #b71c1c;
+  --alagado-bg: #ffebee;
+  --alagado-bd: #ef9a9a;
+
+  --cinza-bg:   #f5f7fa;
+  --cinza-bd:   #e0e6ed;
+  --cinza-txt:  #607080;
+  --txt-main:   #1a2536;
+  --branco:     #ffffff;
+
+  --radius:     12px;
+  --shadow:     0 2px 12px rgba(21, 101, 192, 0.08);
+  --shadow-lg:  0 4px 24px rgba(21, 101, 192, 0.14);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cinza-bg);
+  color: var(--txt-main);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ============================================================
+   ALERTA BANNER
+   ============================================================ */
+
+.alerta-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: #b71c1c;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: 0 4px 16px rgba(183, 28, 28, 0.4);
+  animation: slideDown 0.4s ease;
+}
+
+.alerta-banner.hidden {
+  display: none;
+}
+
+.alerta-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.alerta-banner span:nth-child(2) {
+  flex: 1;
+}
+
+#fechar-alerta {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+#fechar-alerta:hover { opacity: 1; }
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+/* ============================================================
+   CABEÇALHO
+   ============================================================ */
+
+.header {
+  background: var(--branco);
+  border-bottom: 1px solid var(--cinza-bd);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo { flex-shrink: 0; }
+
+.header-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--azul);
+  line-height: 1.2;
+}
+
+.header-subtitle {
+  font-size: 12px;
+  color: var(--cinza-txt);
+  font-weight: 400;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: var(--azul);
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn-primary:hover {
+  background: var(--azul-light);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+  background: linear-gradient(135deg, var(--azul) 0%, #0d47a1 100%);
+  color: white;
+  padding: 56px 0 52px;
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  letter-spacing: 0.02em;
+}
+
+.hero-title {
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 16px;
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-desc {
+  font-size: 16px;
+  opacity: 0.9;
+  max-width: 540px;
+  margin: 0 auto 32px;
+}
+
+.hero-desc strong { color: #90caf9; }
+
+.hero-features {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.feature-icon { font-size: 16px; }
+
+/* ============================================================
+   SEÇÕES
+   ============================================================ */
+
+.section { padding: 48px 0; }
+
+.section-alt {
+  background: var(--branco);
+  border-top: 1px solid var(--cinza-bd);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.section-title {
+  font-size: clamp(18px, 3vw, 24px);
+  font-weight: 700;
+  color: var(--txt-main);
+  margin-bottom: 4px;
+}
+
+.section-sub {
+  font-size: 13px;
+  color: var(--cinza-txt);
+  margin-bottom: 28px;
+}
+
+.section-header .section-title { margin-bottom: 0; }
+
+.atualizando-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--azul-bg);
+  color: var(--azul);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--azul-light);
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* ============================================================
+   CARDS GRID
+   ============================================================ */
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.card {
+  background: var(--branco);
+  border: 1px solid var(--cinza-bd);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.2s;
+}
+
+.card:hover { box-shadow: var(--shadow-lg); }
+
+.card-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cinza-txt);
+  margin-bottom: 12px;
+}
+
+/* Card altura */
+.card-valor-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.card-valor {
+  font-size: 52px;
+  font-weight: 800;
+  color: var(--azul);
+  line-height: 1;
+  transition: color 0.4s;
+}
+
+.card-unidade {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--cinza-txt);
+}
+
+.barra-container {
+  width: 100%;
+  height: 14px;
+  background: var(--cinza-bd);
+  border-radius: 7px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.barra-nivel {
+  height: 100%;
+  width: 0%;
+  border-radius: 7px;
+  transition: width 0.6s ease, background 0.6s ease;
+  background: var(--normal);
+}
+
+.barra-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--cinza-txt);
+}
+
+/* Card status */
+.status-badge {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 8px 22px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  transition: background 0.4s, color 0.4s;
+  border: 2px solid transparent;
+}
+
+.status-badge.normal   { background: var(--normal-bg);   color: var(--normal);   border-color: var(--normal-bd); }
+.status-badge.atencao  { background: var(--atencao-bg);  color: var(--atencao);  border-color: var(--atencao-bd); }
+.status-badge.risco    { background: var(--risco-bg);    color: var(--risco);    border-color: var(--risco-bd); }
+.status-badge.alagado  { background: var(--alagado-bg);  color: var(--alagado);  border-color: var(--alagado-bd); }
+
+.status-desc {
+  font-size: 13px;
+  color: var(--cinza-txt);
+  margin-bottom: 16px;
+  min-height: 38px;
+}
+
+.status-niveis {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nivel-item {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border-left: 3px solid;
+}
+
+.nivel-normal  { background: var(--normal-bg);  color: var(--normal);  border-color: var(--normal); }
+.nivel-atencao { background: var(--atencao-bg); color: var(--atencao); border-color: var(--atencao); }
+.nivel-risco   { background: var(--risco-bg);   color: var(--risco);   border-color: var(--risco); }
+.nivel-alagado { background: var(--alagado-bg); color: var(--alagado); border-color: var(--alagado); }
+
+/* Card hora */
+.hora-valor {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--txt-main);
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+.hora-data {
+  font-size: 14px;
+  color: var(--cinza-txt);
+  margin-bottom: 20px;
+}
+
+.sensor-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--cinza-txt);
+}
+
+.sensor-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cinza-bd);
+  flex-shrink: 0;
+  transition: background 0.4s;
+}
+
+.sensor-dot.conectado { background: #43a047; animation: pulse 2s ease-in-out infinite; }
+.sensor-dot.alerta    { background: var(--alagado); animation: pulse 0.7s ease-in-out infinite; }
+
+/* Card sensor */
+.device-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--azul);
+  margin-bottom: 12px;
+}
+
+.device-detail {
+  font-size: 13px;
+  color: var(--cinza-txt);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--cinza-bg);
+}
+
+.device-detail:last-child { border-bottom: none; }
+
+/* ============================================================
+   TABELA HISTÓRICO
+   ============================================================ */
+
+.tabela-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--cinza-bd);
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tabela thead {
+  background: var(--cinza-bg);
+}
+
+.tabela th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cinza-txt);
+  border-bottom: 1px solid var(--cinza-bd);
+}
+
+.tabela td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--cinza-bg);
+  color: var(--txt-main);
+}
+
+.tabela tr:last-child td { border-bottom: none; }
+
+.tabela tbody tr {
+  transition: background 0.15s;
+}
+
+.tabela tbody tr:hover { background: var(--cinza-bg); }
+
+.tabela-vazia {
+  text-align: center;
+  color: var(--cinza-txt);
+  padding: 32px 16px !important;
+  font-style: italic;
+}
+
+.tag-status {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 5px;
+}
+
+.tag-normal  { background: var(--normal-bg);  color: var(--normal); }
+.tag-atencao { background: var(--atencao-bg); color: var(--atencao); }
+.tag-risco   { background: var(--risco-bg);   color: var(--risco); }
+.tag-alagado { background: var(--alagado-bg); color: var(--alagado); }
+
+.tabela tbody tr:first-child td {
+  font-weight: 600;
+}
+
+/* ============================================================
+   RODAPÉ
+   ============================================================ */
+
+.footer {
+  background: var(--txt-main);
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+  padding: 28px 20px;
+  font-size: 13px;
+}
+
+.footer p { margin-bottom: 4px; }
+.footer-sub { font-size: 12px; opacity: 0.5; }
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+@media (max-width: 600px) {
+  .header-inner {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .header-title { font-size: 17px; }
+  .header-subtitle { display: none; }
+
+  .btn-primary {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .hero { padding: 40px 0 36px; }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-valor { font-size: 42px; }
+  .hora-valor { font-size: 28px; }
+
+  .alerta-banner {
+    font-size: 13px;
+    padding: 12px 14px;
+  }
+
+  .section { padding: 36px 0; }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 768px) {
+  .cards-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
