@@ -5,7 +5,7 @@
    ============================================================ */
 
 var MAX_HISTORICO = 20;
-var INTERVALO_MS  = 5000;
+var INTERVALO_MS  = 1000;
 
 var historicoLinhas = [];
 
@@ -25,7 +25,13 @@ function getBarraColor(classe) {
 
 function atualizarPainel(dados) {
   /* Altura e barra */
-  var pct = Math.min((dados.altura / 150) * 100, 100);
+  var pct;
+
+  if (dados.alagadoRua) {
+    pct = 100;
+  } else {
+    pct = Math.min((dados.altura / 28) * 100, 100);
+  }
 
   var alturaEl = document.getElementById('altura-valor');
   alturaEl.textContent  = dados.altura;
@@ -50,12 +56,15 @@ function atualizarPainel(dados) {
   var dot = document.getElementById('sensor-dot');
   var txt = document.getElementById('sensor-status-txt');
 
-  if (dados.classe === 'alagado' || dados.classe === 'risco') {
+  if (dados.alagadoRua) {
     dot.className = 'sensor-dot alerta';
-    txt.textContent = 'Sensor ativo — ALERTA!';
+    txt.textContent = 'Água detectada na rua — ALAGAMENTO!';
+  } else if (dados.classe === 'risco') {
+    dot.className = 'sensor-dot alerta';
+    txt.textContent = 'Nível crítico no bueiro — ALERTA!';
   } else {
     dot.className = 'sensor-dot conectado';
-    txt.textContent = 'Sensor ativo e conectado';
+    txt.textContent = 'Sensores ativos e conectados';
   }
 
   /* Contagem de leituras */

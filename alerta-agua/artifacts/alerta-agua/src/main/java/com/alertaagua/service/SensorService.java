@@ -12,8 +12,14 @@ import java.util.List;
 @Service
 public class SensorService {
 
-    private static final DateTimeFormatter HORA_FMT = DateTimeFormatter.ofPattern("HH:mm:ss");
-    private static final DateTimeFormatter DATA_FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter HORA_FMT =
+            DateTimeFormatter.ofPattern("HH:mm:ss");
+
+    private static final DateTimeFormatter DATA_FMT =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    // Altura interna total do bueiro da maquete
+    private static final int ALTURA_MAXIMA_BUEIRO = 28;
 
     private final LeituraRepository leituraRepository;
 
@@ -21,11 +27,20 @@ public class SensorService {
         this.leituraRepository = leituraRepository;
     }
 
-    public synchronized LeituraDTO salvarLeituraRecebida(int altura) {
-        StatusInfo status = calcularStatus(altura);
+    public synchronized LeituraDTO salvarLeituraRecebida(
+            int altura,
+            boolean alagadoRua
+    ) {
+        int alturaTratada = normalizarAltura(altura);
+
+        StatusInfo status = calcularStatus(
+                alturaTratada,
+                alagadoRua
+        );
 
         Leitura leitura = new Leitura(
-                altura,
+                alturaTratada,
+                alagadoRua,
                 status.label(),
                 status.classe(),
                 status.descricao(),
@@ -38,23 +53,38 @@ public class SensorService {
     }
 
     public LeituraDTO buscarUltimaLeitura() {
-        return leituraRepository.findTopByOrderByDataHoraDesc()
+        return leituraRepository
+                .findTopByOrderByDataHoraDesc()
                 .map(this::converterParaDTO)
-                .orElseGet(() -> criarLeituraInicial());
+                .orElseGet(this::criarLeituraInicial);
     }
 
     public List<LeituraDTO> listarHistorico() {
-        return leituraRepository.findTop20ByOrderByDataHoraDesc()
+        return leituraRepository
+                .findTop20ByOrderByDataHoraDesc()
                 .stream()
                 .map(this::converterParaDTO)
                 .toList();
     }
 
+    private int normalizarAltura(int altura) {
+        if (altura < 0) {
+            return 0;
+        }
+
+        if (altura > ALTURA_MAXIMA_BUEIRO) {
+            return ALTURA_MAXIMA_BUEIRO;
+        }
+
+        return altura;
+    }
+
     private LeituraDTO criarLeituraInicial() {
-        StatusInfo status = calcularStatus(0);
+        StatusInfo status = calcularStatus(0, false);
 
         return new LeituraDTO(
                 0,
+                false,
                 status.label(),
                 status.classe(),
                 status.descricao(),
@@ -69,6 +99,7 @@ public class SensorService {
 
         return new LeituraDTO(
                 leitura.getAltura(),
+                leitura.isAlagadoRua(),
                 leitura.getStatus(),
                 leitura.getClasse(),
                 leitura.getDescricao(),
@@ -78,33 +109,46 @@ public class SensorService {
         );
     }
 
-    private StatusInfo calcularStatus(int altura) {
-        if (altura < 30) {
+    private StatusInfo calcularStatus(
+            int altura,
+            boolean alagadoRua
+    ) {
+        // O sensor da rua possui prioridade máxima.
+        // Se ele detectou água, o bueiro já transbordou.
+        if (alagadoRua) {
+            return new StatusInfo(
+                    "Alagado",
+                    "alagado",
+                    "ALAGAMENTO! Água detectada na rua. Procure um local seguro."
+            );
+        }
+
+        if (altura < 8) {
             return new StatusInfo(
                     "Normal",
                     "normal",
                     "Nível da água dentro do esperado. Sem risco de alagamento."
             );
-        } else if (altura < 60) {
+        }
+
+        if (altura < 16) {
             return new StatusInfo(
                     "Atenção",
                     "atencao",
-                    "Nível elevado. Fique atento e acompanhe as atualizações."
-            );
-        } else if (altura < 90) {
-            return new StatusInfo(
-                    "Risco",
-                    "risco",
-                    "Nível crítico! Prepare-se para possível evacuação da área."
-            );
-        } else {
-            return new StatusInfo(
-                    "Alagado",
-                    "alagado",
-                    "ALAGAMENTO! Procure abrigo em local seguro imediatamente."
+                    "Nível da água subindo. Acompanhe as atualizações."
             );
         }
+
+        return new StatusInfo(
+                "Risco",
+                "risco",
+                "Nível crítico no bueiro! Existe risco de transbordamento."
+        );
     }
 
-    private record StatusInfo(String label, String classe, String descricao) {}
+    private record StatusInfo(
+            String label,
+            String classe,
+            String descricao
+    ) {}
 }

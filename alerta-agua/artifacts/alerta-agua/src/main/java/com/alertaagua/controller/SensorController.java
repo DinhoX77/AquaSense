@@ -24,7 +24,10 @@ public class SensorController {
 
     @PostMapping("/leitura")
     public LeituraDTO receberLeitura(@RequestBody LeituraRequestDTO dados) {
-        return sensorService.salvarLeituraRecebida(dados.altura());
+        return sensorService.salvarLeituraRecebida(
+                dados.altura(),
+                dados.alagadoRua()
+        );
     }
 
     @GetMapping("/historico")
